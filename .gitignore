@@ -1,0 +1,13 @@
+# Binaires / artefacts de compilation
+*.exe
+*.o
+*.obj
+build/
+bin/
+
+# IDE / OS
+.vscode/
+.idea/
+*.user
+Thumbs.db
+.DS_Store
