@@ -1,31 +1,32 @@
 #ifndef STATISTICMANAGER_H
+
 #define STATISTICMANAGER_H
 
-#include <vector>
+#include <vector>   // Permet d'utiliser vector
 
-class AbstractClient;
+class AbstractClient;   // On utilise la classe AbstractClient
 
-/** Accumule les resultats d'une simulation sans etre proprietaire des clients. */
 class StatisticManager
 {
 public:
-    void registerServedClient(AbstractClient* client);
-    void registerNonServedClient(AbstractClient* client);
-    void simulationDurationRecord();
-    void cashierOccupationRecord();
+    void registerServedClient(AbstractClient* client);   // Enregistre un client servi
+    void registerNonServedClient(AbstractClient* client); // Enregistre un client non servi
+    void simulationDurationRecord();                     // Enregistre la durée
+    void cashierOccupationRecord();                      // Enregistre l'occupation des caissiers
 
-    double calculateAverageCashierOccupationRate(int cashierCount) const;
-    double calculateAverageClientWaitingTime() const;
-    double calculateAverageClientServiceTime() const;
-    int servedClientCount() const;
-    int nonServedClientCount() const;
-    double calculateClientSatisfactionRate() const;
+    double calculateAverageCashierOccupationRate(int cashierCount) const; // Calcule le taux d'occupation
+    double calculateAverageClientWaitingTime() const;                     // Calcule l'attente moyenne
+    double calculateAverageClientServiceTime() const;                     // Calcule le service moyen
+    int servedClientCount() const;                                        // Compte les clients servis
+    int nonServedClientCount() const;                                     // Compte les clients non servis
+    double calculateClientSatisfactionRate() const;                       // Calcule la satisfaction
 
 private:
-    std::vector<AbstractClient*> m_servedClients;
-    std::vector<AbstractClient*> m_nonServedClients;
-    int m_simulationDuration = 0;
-    int m_occupiedCashier = 0;
+    std::vector<AbstractClient*> m_servedClients;      // Liste des clients servis
+    std::vector<AbstractClient*> m_nonServedClients;   // Liste des clients non servis
+
+    int m_simulationDuration = 0;   // Durée de la simulation
+    int m_occupiedCashier = 0;      // Nombre de fois où les caissiers sont occupés
 };
 
 #endif

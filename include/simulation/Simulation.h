@@ -1,38 +1,46 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
-#include <string>
-#include <vector>
+#include <string>                         // Pour utiliser string
+#include <vector>                         // Pour utiliser vector
 
-#include "bank/Bank.h"
-#include "simulation/SimulationEntry.h"
-#include "simulation/StatisticManager.h"
+#include "bank/Bank.h"                    // La simulation utilise la banque
+#include "simulation/SimulationEntry.h"   // Contient les paramètres
+#include "simulation/StatisticManager.h"  // Gère les statistiques
 
-class AbstractClient;
-class Cashier;
+class AbstractClient;   // On utilise la classe Client
+class Cashier;          // On utilise la classe Cashier
 
-/** Orchestre les arrivees, les services, la file et les statistiques. */
 class Simulation
 {
 public:
     explicit Simulation(const SimulationEntry& simulationEntry);
-    ~Simulation();
+    // Crée la simulation avec ses paramètres
+
+    ~Simulation();   // Détruit la simulation
 
     Simulation(const Simulation&) = delete;
     Simulation& operator=(const Simulation&) = delete;
+    // Empêche de copier la simulation
 
-    void simulate();
-    std::string simulationResults() const;
+    void simulate();   // Lance la simulation
+
+    std::string simulationResults() const;   // Retourne les résultats
 
 private:
     void updateBank(int currentSystemTime);
-    void serveClient(int currentSystemTime, Cashier* cashier, AbstractClient* client);
-    AbstractClient* nextWaitingClient();
+    // Met à jour la banque à chaque unité de temps
 
-    SimulationEntry m_simulationEntry;
-    Bank m_bank;
-    StatisticManager m_statisticManager;
-    std::vector<AbstractClient*> m_clients;
+    void serveClient(int currentSystemTime, Cashier* cashier, AbstractClient* client);
+    // Donne un client à un caissier
+
+    AbstractClient* nextWaitingClient();
+    // Cherche le prochain client à servir
+
+    SimulationEntry m_simulationEntry;       // Paramètres de la simulation
+    Bank m_bank;                             // Banque
+    StatisticManager m_statisticManager;     // Statistiques
+    std::vector<AbstractClient*> m_clients;  // Liste des clients
 };
 
 #endif

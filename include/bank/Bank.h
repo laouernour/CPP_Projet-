@@ -7,27 +7,22 @@
 #include "bank/Cashier.h"
 #include "bank/Queue.h"
 
-/**
- * Une banque est composee de caissiers et d'une file d'attente partagee.
- * La banque est proprietaire de ses caissiers.
- */
 class Bank
 {
     public:
-        Bank(int cashierCount);
+        Bank(int cashierCount);       // Création de la banque avec plusieurs caissiers
         ~Bank();
 
-        const std::vector<Cashier*>& getCashiers() const;
-        Queue& getQueue();
+        const std::vector<Cashier*>& getCashiers() const;  // Récupérer les caissiers
+        Queue& getQueue();                                  // Récupérer la file d'attente
 
-        /** @return le premier caissier libre trouve, ou nullptr. */
-        Cashier* getFreeCashier() const;
+        Cashier* getFreeCashier() const;   // Chercher un caissier libre
 
-        std::string toString() const;
+        std::string toString() const;      // Afficher l'état de la banque
 
     private:
-        std::vector<Cashier*> m_cashiers;
-        Queue m_queue;
+        std::vector<Cashier*> m_cashiers;  // Liste des caissiers
+        Queue m_queue;                     // File d'attente commune
 };
 
 #endif // BANK_H

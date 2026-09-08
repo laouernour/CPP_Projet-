@@ -1,38 +1,32 @@
 #ifndef CASHIER_H
 #define CASHIER_H
 
-#include <string>
+#include <string>                   
 
-#include "client/AbstractClient.h"
+#include "client/AbstractClient.h"   // On utilise la classe AbstractClient
 
-/**
- * Un caissier sert au plus un client a la fois. Le pointeur servingClient est
- * une reference (le caissier ne detruit pas le client).
- */
 class Cashier
 {
     public:
-        Cashier();
+        Cashier();   // Crée un caissier
 
-        bool isFree() const;
+        bool isFree() const;   // Vérifie si le caissier est libre
 
-        /** Fait travailler le caissier pendant une unite de temps. */
-        void work();
+        void work();   // Fait avancer le temps de service
 
-        /** @return true si le caissier vient de terminer le service courant. */
-        bool serviceFinished() const;
+        bool serviceFinished() const;   // Vérifie si le service est terminé
 
-        /** Commence le service d'un nouveau client. */
-        void serve(AbstractClient* servingClient);
+        void serve(AbstractClient* servingClient);   // Commence à servir un client
 
-        AbstractClient* getServingClient() const;
-        void setServingClient(AbstractClient* servingClient);
+        AbstractClient* getServingClient() const;   // Récupère le client servi
 
-        std::string toString() const;
+        void setServingClient(AbstractClient* servingClient);   // Change le client servi
+
+        std::string toString() const;   // Retourne l'état du caissier
 
     private:
-        AbstractClient* m_servingClient;
-        int m_remainingServiceTime;
+        AbstractClient* m_servingClient;   // Client actuellement servi
+        int m_remainingServiceTime;        // Temps de service restant
 };
 
 #endif // CASHIER_H

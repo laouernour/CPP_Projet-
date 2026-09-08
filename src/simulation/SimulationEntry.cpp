@@ -1,6 +1,6 @@
 #include "simulation/SimulationEntry.h"
 
-#include <stdexcept>
+#include <stdexcept> // Permet de lancer une exception en cas de paramètre invalide
 
 SimulationEntry::SimulationEntry(int simulationDuration, int cashierCount, int minServiceTime,
                                  int maxServiceTime, int clientArrivalInterval,
@@ -10,6 +10,7 @@ SimulationEntry::SimulationEntry(int simulationDuration, int cashierCount, int m
       m_clientArrivalInterval(clientArrivalInterval), m_priorityClientRate(priorityClientRate),
       m_clientPatienceTime(clientPatienceTime)
 {
+    // Vérifie que tous les paramètres sont valides
     if (simulationDuration < 0 || cashierCount <= 0 || minServiceTime <= 0 ||
         maxServiceTime < minServiceTime || clientArrivalInterval <= 0 ||
         priorityClientRate < 0.0 || priorityClientRate > 1.0 || clientPatienceTime < 0)

@@ -1,40 +1,33 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include <list>
-#include <string>
-#include <vector>
+#include <list>                       // Permet de stocker les clients
+#include <string>                     // Permet d'utiliser std::string
+#include <vector>                     // Permet de retourner une liste de clients
 
-#include "client/AbstractClient.h"
+#include "client/AbstractClient.h"     // On utilise AbstractClient
 
-/**
- * File d'attente FIFO de clients. Les pointeurs sont des references : la file ne
- * detruit pas les clients.
- */
 class Queue
 {
     public:
-        bool isEmpty() const;
+        bool isEmpty() const;   // Vérifie si la file est vide
 
-        void addQueueLast(AbstractClient* client);
+        void addQueueLast(AbstractClient* client);   // Ajoute un client à la fin
 
-        /** Retire et retourne le premier client de la file. */
-        AbstractClient* getQueueFirst();
+        AbstractClient* getQueueFirst();   // Récupère le premier client
 
-        /** @return le client prioritaire le plus proche de la tete, ou nullptr. */
-        AbstractClient* findPriorityClient() const;
+        AbstractClient* findPriorityClient() const;   // Cherche le premier client VIP
 
-        void removePriorityClient(AbstractClient* client);
+        void removePriorityClient(AbstractClient* client);   // Retire un client VIP
 
-        void updateClientPatience();
+        void updateClientPatience();   // Diminue la patience des clients
 
-        /** Retire de la file et retourne la liste des clients devenus impatients. */
-        std::vector<AbstractClient*> removeImpatientClients();
+        std::vector<AbstractClient*> removeImpatientClients();   // Retire les clients impatients
 
-        std::string toString() const;
+        std::string toString() const;   // Retourne l'état de la file
 
     private:
-        std::list<AbstractClient*> m_clients;
+        std::list<AbstractClient*> m_clients;   // Liste des clients en attente
 };
 
 #endif // QUEUE_H

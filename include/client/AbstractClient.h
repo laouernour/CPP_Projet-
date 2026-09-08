@@ -1,44 +1,39 @@
 #ifndef ABSTRACTCLIENT_H
 #define ABSTRACTCLIENT_H
 
-#include <string>
+#include <string>                       
 
-#include "client/AbstractOperation.h"
+#include "client/AbstractOperation.h"   // Un client possède une opération
 
-/**
- * On a besoin de savoir quand un client arrive, quand le service commence et se
- * termine. A la creation du client, seul son temps d'arrivee est defini.
- * Le client est proprietaire de son operation (il la detruit).
- */
 class AbstractClient
 {
     public:
         AbstractClient(int arrivalTime, AbstractOperation* operation, int patienceTime);
-        virtual ~AbstractClient();
+        virtual ~AbstractClient();   // Destructeur
 
-        virtual bool isPriority() const = 0;
+        virtual bool isPriority() const = 0;   // Dit si le client est VIP
 
-        int getArrivalTime() const;
+        int getArrivalTime() const;   // Récupère l'heure d'arrivée
 
-        int getDepartureTime() const;
-        void setDepartureTime(int departureTime);
+        int getDepartureTime() const;   // Récupère l'heure de départ
+        void setDepartureTime(int departureTime);   // Définit l'heure de départ
 
-        int getServiceStartTime() const;
-        void setServiceStartTime(int serviceStartTime);
+        int getServiceStartTime() const;   // Récupère le début du service
+        void setServiceStartTime(int serviceStartTime);   // Définit le début du service
 
-        AbstractOperation* getOperation() const;
+        AbstractOperation* getOperation() const;   // Récupère l'opération du client
 
-        void reducePatience();
-        bool isPatient() const;
+        void reducePatience();   // Diminue la patience du client
+        bool isPatient() const;  // Vérifie si le client est encore patient
 
-        virtual std::string toString() const;
+        virtual std::string toString() const;   // Retourne les informations du client
 
     private:
-        int m_arrivalTime;
-        int m_serviceStartTime;
-        int m_departureTime;
-        AbstractOperation* m_operation;
-        int m_patienceTime;
+        int m_arrivalTime;              // Heure d'arrivée
+        int m_serviceStartTime;         // Début du service
+        int m_departureTime;            // Heure de départ
+        AbstractOperation* m_operation; // Opération du client
+        int m_patienceTime;             // Patience restante
 };
 
 #endif // ABSTRACTCLIENT_H

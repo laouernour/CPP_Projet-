@@ -1,15 +1,16 @@
-#include "client/Withdraw.h"
+#include "client/Withdraw.h"   // Utilise la classe Withdraw
 
-Withdraw::Withdraw(int serviceTime) : AbstractOperation(serviceTime)
+Withdraw::Withdraw(int serviceTime)
+    : AbstractOperation(serviceTime)   // Initialise le temps de service
 {
 }
 
 bool Withdraw::isUrgent() const
 {
-    return true;
+    return true;   // Un retrait est urgent
 }
 
 std::string Withdraw::toString() const
 {
-    return "Operation : Retrait";
+    return "Operation : Retrait";   // Retourne le nom de l'opération
 }
