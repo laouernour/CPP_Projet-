@@ -1,80 +1,34 @@
 #include <iostream>
-#include <vector>
+#include "simulation/Simulation.h"
 
-#include "client/AbstractOperation.h"
-#include "client/Consultation.h"
-#include "client/Transfer.h"
-#include "client/Withdraw.h"
-#include "client/AbstractClient.h"
-#include "client/Client.h"
-#include "client/VIPClient.h"
-#include "bank/Cashier.h"
-#include "bank/Queue.h"
-#include "bank/Bank.h"
+#include <iostream>
 
-using namespace std;
-
-/**
- * Test de fumee : verifie que toutes les classes des paquets client/ et bank/
- * compilent et fonctionnent ensemble (polymorphisme, file d'attente, caissiers).
- */
 int main()
 {
-    // --- Operations (polymorphisme sur AbstractOperation) ---
-    cout << "=== Operations ===" << endl;
-    vector<AbstractOperation*> operations;
-    operations.push_back(new Consultation(12));
-    operations.push_back(new Transfer(8));
-    operations.push_back(new Withdraw(15));
-    for (AbstractOperation* op : operations)
-    {
-        cout << op->toString()
-             << " | serviceTime = " << op->getServiceTime()
-             << " | urgent = " << (op->isUrgent() ? "oui" : "non") << endl;
-        delete op;
-    }
+    const SimulationEntry parameters(
+        1000, // duree de la simulation
+        3,    // nombre de caissiers
+        10,   // temps minimal de service
+        20,   // temps maximal de service
+        5,    // un client arrive toutes les 5 unites de temps
+        0.10, // 10 % de clients VIP
+        7);   // patience des clients non urgents
 
-    // --- Banque + file d'attente ---
-    cout << "\n=== Banque (2 caissiers) ===" << endl;
-    Bank bank(2);
+    std::cout << "========================================\n";
+    std::cout << "       SIMULATION D'AGENCE BANCAIRE\n";
+    std::cout << "========================================\n";
+    std::cout << "Duree                 : " << parameters.getSimulationDuration() << " unites\n";
+    std::cout << "Nombre de caissiers   : " << parameters.getCashierCount() << "\n";
+    std::cout << "Duree d'un service    : " << parameters.getMinServiceTime()
+              << " a " << parameters.getMaxServiceTime() << " unites\n";
+    std::cout << "Arrivee d'un client   : toutes les "
+              << parameters.getClientArrivalInterval() << " unites\n";
+    std::cout << "Taux de clients VIP   : " << parameters.getPriorityClientRate() * 100 << " %\n";
+    std::cout << "Patience              : " << parameters.getClientPatienceTime() << " unites\n\n";
 
-    AbstractClient* c1 = new Client(0, new Consultation(3), 5);
-    AbstractClient* c2 = new VIPClient(1, new Withdraw(4), 5);
-    AbstractClient* c3 = new Client(2, new Transfer(2), 5);
-
-    bank.getQueue().addQueueLast(c1);
-    bank.getQueue().addQueueLast(c2);
-    bank.getQueue().addQueueLast(c3);
-    cout << bank.toString() << endl;
-
-    // Le caissier libre prend en priorite le client VIP
-    Cashier* free = bank.getFreeCashier();
-    AbstractClient* priority = bank.getQueue().findPriorityClient();
-    if (priority != nullptr)
-    {
-        bank.getQueue().removePriorityClient(priority);
-        free->serve(priority);
-        cout << "\nLe caissier sert en priorite : " << priority->toString() << endl;
-    }
-    cout << bank.toString() << endl;
-
-    // Simule quelques unites de temps
-    cout << "\n=== 5 unites de temps ===" << endl;
-    for (int t = 0; t < 5; t++)
-    {
-        for (Cashier* cashier : bank.getCashiers())
-        {
-            cashier->work();
-        }
-        bank.getQueue().updateClientPatience();
-        cout << "t=" << t << " -> " << bank.toString() << endl;
-    }
-
-    // Nettoyage
-    delete c1;
-    delete c2;
-    delete c3;
-
-    cout << "\nOK : bank2_cpp (client/ + bank/) compile et s'execute." << endl;
+    Simulation simulation(parameters);
+    simulation.simulate();
+    std::cout << "Simulation terminee.\n\n";
+    std::cout << simulation.simulationResults() << std::endl;
     return 0;
 }

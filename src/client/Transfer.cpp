@@ -11,5 +11,5 @@ bool Transfer::isUrgent() const
 
 std::string Transfer::toString() const
 {
-    return "Operation : Transfer";
+    return "Operation : Virement";
 }

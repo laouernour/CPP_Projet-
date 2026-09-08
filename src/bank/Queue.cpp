@@ -62,7 +62,7 @@ std::vector<AbstractClient*> Queue::removeImpatientClients()
 
 std::string Queue::toString() const
 {
-    std::string results = "Queue size[" + std::to_string(m_clients.size()) + "] : ";
+    std::string results = "Taille de la file[" + std::to_string(m_clients.size()) + "] : ";
     for (AbstractClient* client : m_clients)
     {
         results += client->toString() + "-->";

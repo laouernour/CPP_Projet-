@@ -11,5 +11,5 @@ bool Withdraw::isUrgent() const
 
 std::string Withdraw::toString() const
 {
-    return "Operation : Withdraw";
+    return "Operation : Retrait";
 }

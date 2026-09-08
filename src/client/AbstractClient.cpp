@@ -59,7 +59,7 @@ bool AbstractClient::isPatient() const
 
 std::string AbstractClient::toString() const
 {
-    return "Client[arrival : " + std::to_string(m_arrivalTime)
-         + ", patience time : " + std::to_string(m_patienceTime)
+    return "Client[arrivee : " + std::to_string(m_arrivalTime)
+         + ", temps de patience : " + std::to_string(m_patienceTime)
          + ", " + m_operation->toString() + "]";
 }

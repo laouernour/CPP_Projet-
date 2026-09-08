@@ -12,5 +12,5 @@ bool VIPClient::isPriority() const
 
 std::string VIPClient::toString() const
 {
-    return "Priority " + AbstractClient::toString();
+    return "Prioritaire " + AbstractClient::toString();
 }

@@ -42,7 +42,7 @@ Cashier* Bank::getFreeCashier() const
 std::string Bank::toString() const
 {
     std::string results = m_queue.toString() + "\n";
-    results += "Cashiers : ";
+    results += "Caissiers : ";
     for (Cashier* cashier : m_cashiers)
     {
         results += cashier->toString();

@@ -40,5 +40,5 @@ void Cashier::setServingClient(AbstractClient* servingClient)
 
 std::string Cashier::toString() const
 {
-    return "Cashier[Remains : " + std::to_string(m_remainingServiceTime) + "]";
+    return "Caissier[Temps restant : " + std::to_string(m_remainingServiceTime) + "]";
 }
