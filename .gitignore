@@ -5,6 +5,11 @@
 build/
 bin/
 
+# Base de données générée à l'exécution
+*.db
+*.db-journal
+*.sqlite
+
 # IDE / OS
 .vscode/
 .idea/

@@ -15,6 +15,8 @@ class AbstractOperation
 
         virtual std::string toString() const = 0;   // Retourne les informations de l'opération
 
+        virtual std::string typeName() const = 0;   // Nom court du type ("consultation", "transfer", "withdraw")
+
     private:
         int m_serviceTime;   // Temps nécessaire pour réaliser l'opération
 };

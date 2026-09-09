@@ -14,3 +14,8 @@ std::string Transfer::toString() const
 {
     return "Operation : Virement";   // Retourne le nom de l'opération
 }
+
+std::string Transfer::typeName() const
+{
+    return "transfer";   // Nom court utilisé pour la base de données
+}

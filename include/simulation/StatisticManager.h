@@ -21,6 +21,9 @@ public:
     int nonServedClientCount() const;                                     // Compte les clients non servis
     double calculateClientSatisfactionRate() const;                       // Calcule la satisfaction
 
+    const std::vector<AbstractClient*>& servedClients() const;    // Liste des clients servis
+    const std::vector<AbstractClient*>& nonServedClients() const; // Liste des clients non servis
+
 private:
     std::vector<AbstractClient*> m_servedClients;      // Liste des clients servis
     std::vector<AbstractClient*> m_nonServedClients;   // Liste des clients non servis

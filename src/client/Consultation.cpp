@@ -14,3 +14,8 @@ std::string Consultation::toString() const
 {
     return "Operation : Consultation";   // Retourne le nom de l'opération
 }
+
+std::string Consultation::typeName() const
+{
+    return "consultation";   // Nom court utilisé pour la base de données
+}

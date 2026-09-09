@@ -14,6 +14,9 @@ class Transfer : public AbstractOperation
 
         std::string toString() const override;
         // Retourne les informations de l'opération
+
+        std::string typeName() const override;
+        // Retourne "transfer"
 };
 
 #endif // TRANSFER_H

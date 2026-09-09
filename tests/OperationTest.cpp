@@ -48,10 +48,17 @@ int main()
     assert(withdraw.toString() == "Operation : Retrait");
     std::cout << "[OK] toString() par type\n";
 
-    // 6) Polymorphisme : via un pointeur de base, isUrgent() appelle la bonne version.
+    // 6) typeName() : nom court utilise pour la base de donnees.
+    assert(consultation.typeName() == "consultation");
+    assert(transfer.typeName() == "transfer");
+    assert(withdraw.typeName() == "withdraw");
+    std::cout << "[OK] typeName() par type\n";
+
+    // 7) Polymorphisme : via un pointeur de base, isUrgent() appelle la bonne version.
     AbstractOperation* op = &transfer;
     assert(op->isUrgent() == true);
     assert(op->getServiceTime() == 15);
+    assert(op->typeName() == "transfer");
     std::cout << "[OK] polymorphisme sur isUrgent()\n";
 
     std::cout << "Operations : tous les tests sont passes.\n";

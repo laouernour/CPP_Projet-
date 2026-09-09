@@ -212,3 +212,15 @@ std::string Simulation::simulationResults() const
 
     return results.str();   // Retourne tous les résultats
 }
+
+
+const SimulationEntry& Simulation::getEntry() const
+{
+    return m_simulationEntry;
+}
+
+
+const StatisticManager& Simulation::getStatistics() const
+{
+    return m_statisticManager;
+}

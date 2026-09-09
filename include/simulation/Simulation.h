@@ -27,6 +27,9 @@ public:
 
     std::string simulationResults() const;   // Retourne les résultats
 
+    const SimulationEntry& getEntry() const;          // Paramètres utilisés
+    const StatisticManager& getStatistics() const;    // Statistiques accumulées
+
 private:
     void updateBank(int currentSystemTime);
     // Met à jour la banque à chaque unité de temps

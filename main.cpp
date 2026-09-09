@@ -1,7 +1,7 @@
 #include <iostream>
-#include "simulation/Simulation.h"
 
-#include <iostream>
+#include "simulation/Simulation.h"
+#include "database/Database.h"
 
 int main()
 {
@@ -35,6 +35,21 @@ int main()
     // Affichage des résultats
     std::cout << "Simulation terminee.\n\n";
     std::cout << simulation.simulationResults() << std::endl;
+
+    // Enregistrement des résultats dans la base de données, puis relecture
+    try
+    {
+        Database database("bank2.db");
+        const long long id =
+            database.saveSimulation(simulation.getEntry(), simulation.getStatistics());
+        std::cout << "\nResultats enregistres dans bank2.db (simulation #" << id << ").\n\n";
+        std::cout << database.readAllSimulations() << std::endl;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "\nErreur base de donnees : " << e.what() << '\n';
+        return 1;
+    }
 
     return 0;
 }
