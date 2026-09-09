@@ -30,6 +30,11 @@ Queue& Bank::getQueue()
     return m_queue;   // Retourne la file d'attente
 }
 
+const Queue& Bank::getQueue() const
+{
+    return m_queue;   // Retourne la file d'attente (lecture seule)
+}
+
 Cashier* Bank::getFreeCashier() const
 {
     // Cherche un caissier libre

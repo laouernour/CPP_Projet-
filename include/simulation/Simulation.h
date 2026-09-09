@@ -23,12 +23,19 @@ public:
     Simulation& operator=(const Simulation&) = delete;
     // Empêche de copier la simulation
 
-    void simulate();   // Lance la simulation
+    void simulate();   // Lance la simulation complète (mode console)
+
+    bool step();       // Avance d'une seule unité de temps ; renvoie false quand c'est fini
+    bool isFinished() const;      // Vrai quand la simulation est terminée
+    int  getCurrentTime() const;  // Unité de temps courante
+
+    void setVerbose(bool verbose);   // Active/désactive l'affichage console (off en mode graphique)
 
     std::string simulationResults() const;   // Retourne les résultats
 
     const SimulationEntry& getEntry() const;          // Paramètres utilisés
     const StatisticManager& getStatistics() const;    // Statistiques accumulées
+    const Bank& getBank() const;                      // État de la banque (affichage)
 
 private:
     void updateBank(int currentSystemTime);
@@ -44,6 +51,9 @@ private:
     Bank m_bank;                             // Banque
     StatisticManager m_statisticManager;     // Statistiques
     std::vector<AbstractClient*> m_clients;  // Liste des clients
+
+    int m_currentSystemTime = 0;   // Unité de temps courante
+    bool m_verbose = true;         // Affichage console de la trace
 };
 
 #endif

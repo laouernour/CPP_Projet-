@@ -1,8 +1,9 @@
 # Build script pour bank2_cpp
 # Utilisation :  .\build.ps1           (compile le programme principal)
-#               .\build.ps1 -Run      (compile puis execute)
+#               .\build.ps1 -Run      (compile puis execute en mode console)
+#               .\build.ps1 -Gui      (compile puis lance la fenetre graphique temps reel)
 #               .\build.ps1 -Test     (compile et lance les tests unitaires)
-param([switch]$Run, [switch]$Test)
+param([switch]$Run, [switch]$Gui, [switch]$Test)
 
 $ErrorActionPreference = "Stop"
 $proj = $PSScriptRoot
@@ -25,6 +26,7 @@ if (-not (Test-Path $sqliteObj) -or ((Get-Item $sqliteSrc).LastWriteTime -gt (Ge
 
 $srcFiles = Get-ChildItem -Recurse "$proj\src" -Filter *.cpp | ForEach-Object { $_.FullName }
 $flags = @("-std=c++17", "-Wall", "-Wextra", "-I$proj\include", "-I$proj\third_party\sqlite")
+$libs  = @("-lgdi32", "-luser32")   # API graphique Windows (tache 3)
 
 if ($Test) {
     Write-Host "Compilation et execution des tests..." -ForegroundColor Cyan
@@ -33,7 +35,7 @@ if ($Test) {
     $pass = 0; $fail = 0
     foreach ($t in Get-ChildItem "$proj\tests" -Filter *.cpp) {
         $exe = "$testDir\$($t.BaseName).exe"
-        & g++ @flags $t.FullName $srcFiles $sqliteObj -o $exe
+        & g++ @flags $t.FullName $srcFiles $sqliteObj -o $exe @libs
         if ($LASTEXITCODE -ne 0) { Write-Host "  COMPILE FAIL : $($t.Name)" -ForegroundColor Red; $fail++; continue }
         & $exe | Out-Null
         if ($LASTEXITCODE -eq 0) { Write-Host "  PASS : $($t.Name)" -ForegroundColor Green; $pass++ }
@@ -46,11 +48,15 @@ if ($Test) {
 
 Write-Host "Compilation..." -ForegroundColor Cyan
 $exe = "$proj\bank2.exe"
-& g++ @flags "$proj\main.cpp" $srcFiles $sqliteObj -o $exe
+& g++ @flags "$proj\main.cpp" $srcFiles $sqliteObj -o $exe @libs
 if ($LASTEXITCODE -ne 0) { Write-Host "Echec de compilation." -ForegroundColor Red; exit 1 }
 Write-Host "OK -> $exe" -ForegroundColor Green
 
 if ($Run) {
     Write-Host "--- Execution ---" -ForegroundColor Cyan
     & $exe
+}
+if ($Gui) {
+    Write-Host "--- Execution (fenetre graphique) ---" -ForegroundColor Cyan
+    & $exe gui
 }

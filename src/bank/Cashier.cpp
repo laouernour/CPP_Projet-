@@ -42,6 +42,11 @@ void Cashier::setServingClient(AbstractClient* servingClient)
     m_servingClient = servingClient;   // Change le client servi
 }
 
+int Cashier::getRemainingServiceTime() const
+{
+    return m_remainingServiceTime;   // Temps restant avant la fin du service
+}
+
 std::string Cashier::toString() const
 {
     return "Caissier[Temps restant : " + std::to_string(m_remainingServiceTime) + "]";
