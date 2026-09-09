@@ -7,7 +7,7 @@ int main()
 {
     // Création des paramètres de la simulation
     const SimulationEntry parameters(
-        1000, // duree de la simulation
+        100, // duree de la simulation
         3,    // nombre de caissiers
         10,   // temps minimal de service
         20,   // temps maximal de service
