@@ -175,7 +175,7 @@ AbstractClient* Simulation::nextWaitingClient()
         queue.removePriorityClient(priorityClient);   // Retire le VIP de la file
         return priorityClient;                       // Retourne le VIP
     }
-
+b 
     return queue.getQueueFirst();   // Sinon, retourne le premier client
 }
 
