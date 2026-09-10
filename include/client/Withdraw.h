@@ -14,6 +14,9 @@ class Withdraw : public AbstractOperation
 
         std::string toString() const override;
         // Retourne les informations de l'opération
+
+        std::string typeName() const override;
+        // Retourne "withdraw"
 };
 
 #endif // WITHDRAW_H

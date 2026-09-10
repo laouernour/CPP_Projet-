@@ -56,6 +56,18 @@ CREATE TABLE IF NOT EXISTS services (
     CHECK (end_time IS NULL OR end_time >= start_time)
 );
 
+-- Resultats statistiques calcules a la fin de chaque simulation.
+CREATE TABLE IF NOT EXISTS statistics (
+    simulation_id INTEGER PRIMARY KEY,
+    served_client_count INTEGER NOT NULL CHECK (served_client_count >= 0),
+    non_served_client_count INTEGER NOT NULL CHECK (non_served_client_count >= 0),
+    average_waiting_time REAL NOT NULL,
+    average_service_time REAL NOT NULL,
+    cashier_occupation_rate REAL NOT NULL,
+    client_satisfaction_rate REAL NOT NULL,
+    FOREIGN KEY (simulation_id) REFERENCES simulations(id) ON DELETE CASCADE
+);
+
 CREATE INDEX IF NOT EXISTS idx_clients_simulation_id ON clients(simulation_id);
 CREATE INDEX IF NOT EXISTS idx_clients_arrival_time ON clients(arrival_time);
 CREATE INDEX IF NOT EXISTS idx_services_cashier_id ON services(cashier_id);

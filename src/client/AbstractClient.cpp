@@ -58,6 +58,11 @@ bool AbstractClient::isPatient() const
     // Patient s'il a encore de la patience ou si l'opération est urgente
 }
 
+int AbstractClient::getPatienceTime() const
+{
+    return m_patienceTime;   // Patience restante
+}
+
 std::string AbstractClient::toString() const
 {
     return "Client[arrivee : " + std::to_string(m_arrivalTime)

@@ -14,3 +14,8 @@ std::string Withdraw::toString() const
 {
     return "Operation : Retrait";   // Retourne le nom de l'opération
 }
+
+std::string Withdraw::typeName() const
+{
+    return "withdraw";   // Nom court utilisé pour la base de données
+}

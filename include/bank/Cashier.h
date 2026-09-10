@@ -22,6 +22,8 @@ class Cashier
 
         void setServingClient(AbstractClient* servingClient);   // Change le client servi
 
+        int getRemainingServiceTime() const;   // Temps de service restant (pour l'affichage)
+
         std::string toString() const;   // Retourne l'état du caissier
 
     private:

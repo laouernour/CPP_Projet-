@@ -28,68 +28,109 @@ Simulation::~Simulation()
 }
 
 
+void Simulation::setVerbose(bool verbose)
+{
+    m_verbose = verbose;   // Contrôle l'affichage de la trace dans la console
+}
+
+
+bool Simulation::isFinished() const
+{
+    return m_currentSystemTime > m_simulationEntry.getSimulationDuration();
+}
+
+
+int Simulation::getCurrentTime() const
+{
+    return m_currentSystemTime;
+}
+
+
 void Simulation::simulate()
 {
-    // La simulation avance une unité de temps à chaque tour
-    for (int currentSystemTime = 0;
-         currentSystemTime <= m_simulationEntry.getSimulationDuration();
-         ++currentSystemTime)
+    // Lance toute la simulation, une unité de temps après l'autre
+    while (step())
     {
-        m_statisticManager.simulationDurationRecord();   // Enregistre la durée
+    }
+}
 
+
+bool Simulation::step()
+{
+    // Rien à faire si la durée est déjà atteinte
+    if (isFinished())
+    {
+        return false;
+    }
+
+    const int currentSystemTime = m_currentSystemTime;
+
+    m_statisticManager.simulationDurationRecord();   // Enregistre la durée
+
+    if (m_verbose)
+    {
         SimulationUtility::printBankStat(currentSystemTime, m_bank);   // Affiche l'état de la banque
+    }
 
-        updateBank(currentSystemTime);   // Met à jour les caissiers et la file
+    updateBank(currentSystemTime);   // Met à jour les caissiers et la file
 
 
-        // Vérifie si un nouveau client doit arriver
-        if (currentSystemTime % m_simulationEntry.getClientArrivalInterval() == 0)
+    // Vérifie si un nouveau client doit arriver
+    if (currentSystemTime % m_simulationEntry.getClientArrivalInterval() == 0)
+    {
+        // Génère un temps de service aléatoire
+        const int serviceTime = SimulationUtility::getRandomServiceTime(
+            m_simulationEntry.getMinServiceTime(),
+            m_simulationEntry.getMaxServiceTime());
+
+        AbstractClient* client = nullptr;   // Aucun client pour le moment
+
+
+        // Détermine si le client est VIP
+        if (SimulationUtility::isPriorityClient(
+            m_simulationEntry.getPriorityClientRate()))
         {
-            // Génère un temps de service aléatoire
-            const int serviceTime = SimulationUtility::getRandomServiceTime(
-                m_simulationEntry.getMinServiceTime(),
-                m_simulationEntry.getMaxServiceTime());
+            // Crée un client VIP
+            client = new VIPClient(currentSystemTime,
+                SimulationUtility::getRandomOperation(serviceTime),
+                m_simulationEntry.getClientPatienceTime());
+        }
+        else
+        {
+            // Crée un client normal
+            client = new Client(currentSystemTime,
+                SimulationUtility::getRandomOperation(serviceTime),
+                m_simulationEntry.getClientPatienceTime());
+        }
 
-            AbstractClient* client = nullptr;   // Aucun client pour le moment
+        m_clients.push_back(client);   // Ajoute le client à la liste
 
 
-            // Détermine si le client est VIP
-            if (SimulationUtility::isPriorityClient(
-                m_simulationEntry.getPriorityClientRate()))
+        // Cherche un caissier libre
+        Cashier* cashier = m_bank.getFreeCashier();
+
+        if (cashier == nullptr)
+        {
+            // Aucun caissier libre : le client attend dans la file
+            if (m_verbose)
             {
-                // Crée un client VIP
-                client = new VIPClient(currentSystemTime,
-                    SimulationUtility::getRandomOperation(serviceTime),
-                    m_simulationEntry.getClientPatienceTime());
-            }
-            else
-            {
-                // Crée un client normal
-                client = new Client(currentSystemTime,
-                    SimulationUtility::getRandomOperation(serviceTime),
-                    m_simulationEntry.getClientPatienceTime());
-            }
-
-            m_clients.push_back(client);   // Ajoute le client à la liste
-
-
-            // Cherche un caissier libre
-            Cashier* cashier = m_bank.getFreeCashier();
-
-            if (cashier == nullptr)
-            {
-                // Aucun caissier libre : le client attend dans la file
                 SimulationUtility::printClientArrival(currentSystemTime, false);
-                m_bank.getQueue().addQueueLast(client);
             }
-            else
+            m_bank.getQueue().addQueueLast(client);
+        }
+        else
+        {
+            // Un caissier est libre : le client est servi directement
+            if (m_verbose)
             {
-                // Un caissier est libre : le client est servi directement
                 SimulationUtility::printClientArrival(currentSystemTime, true);
-                serveClient(currentSystemTime, cashier, client);
             }
+            serveClient(currentSystemTime, cashier, client);
         }
     }
+
+    ++m_currentSystemTime;   // Passe à l'unité de temps suivante
+    return !isFinished();
 }
 
 
@@ -115,7 +156,10 @@ void Simulation::updateBank(int currentSystemTime)
 
             leavingClient->setDepartureTime(currentSystemTime);   // Enregistre le départ
 
-            SimulationUtility::printClientDeparture(currentSystemTime);   // Affiche le départ
+            if (m_verbose)
+            {
+                SimulationUtility::printClientDeparture(currentSystemTime);   // Affiche le départ
+            }
 
             m_statisticManager.registerServedClient(leavingClient);   // Enregistre le client servi
 
@@ -143,7 +187,10 @@ void Simulation::updateBank(int currentSystemTime)
 
         m_statisticManager.registerNonServedClient(client);   // Enregistre le client non servi
 
-        SimulationUtility::printClientDepartureWithoutBeingServed(currentSystemTime);
+        if (m_verbose)
+        {
+            SimulationUtility::printClientDepartureWithoutBeingServed(currentSystemTime);
+        }
     }
 }
 
@@ -157,9 +204,12 @@ void Simulation::serveClient(
 
     cashier->serve(client);   // Le caissier commence le service
 
-    SimulationUtility::printServiceTimeTrace(
-        currentSystemTime,
-        client->getOperation()->getServiceTime());   // Affiche le temps de service
+    if (m_verbose)
+    {
+        SimulationUtility::printServiceTimeTrace(
+            currentSystemTime,
+            client->getOperation()->getServiceTime());   // Affiche le temps de service
+    }
 }
 
 
@@ -211,4 +261,22 @@ std::string Simulation::simulationResults() const
             << m_statisticManager.calculateClientSatisfactionRate() << " %";
 
     return results.str();   // Retourne tous les résultats
+}
+
+
+const SimulationEntry& Simulation::getEntry() const
+{
+    return m_simulationEntry;
+}
+
+
+const StatisticManager& Simulation::getStatistics() const
+{
+    return m_statisticManager;
+}
+
+
+const Bank& Simulation::getBank() const
+{
+    return m_bank;
 }

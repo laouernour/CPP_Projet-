@@ -66,6 +66,16 @@ std::vector<AbstractClient*> Queue::removeImpatientClients()
     return removeList;   // Retourne les clients retirés
 }
 
+int Queue::size() const
+{
+    return static_cast<int>(m_clients.size());   // Nombre de clients en attente
+}
+
+const std::list<AbstractClient*>& Queue::items() const
+{
+    return m_clients;   // Accès en lecture seule à la file
+}
+
 std::string Queue::toString() const
 {
     std::string results = "Taille de la file[" + std::to_string(m_clients.size()) + "] : ";

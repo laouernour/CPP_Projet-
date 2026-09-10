@@ -103,3 +103,13 @@ double StatisticManager::calculateClientSatisfactionRate() const
     // Calcule le pourcentage de clients servis
     return 100.0 * servedClientCount() / totalClientCount;
 }
+
+const std::vector<AbstractClient*>& StatisticManager::servedClients() const
+{
+    return m_servedClients;
+}
+
+const std::vector<AbstractClient*>& StatisticManager::nonServedClients() const
+{
+    return m_nonServedClients;
+}

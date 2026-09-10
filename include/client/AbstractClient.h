@@ -25,6 +25,7 @@ class AbstractClient
 
         void reducePatience();   // Diminue la patience du client
         bool isPatient() const;  // Vérifie si le client est encore patient
+        int getPatienceTime() const;   // Patience restante (pour l'affichage)
 
         virtual std::string toString() const;   // Retourne les informations du client
 

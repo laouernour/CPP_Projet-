@@ -26,6 +26,10 @@ class Queue
 
         std::string toString() const;   // Retourne l'état de la file
 
+        int size() const;   // Nombre de clients en attente
+
+        const std::list<AbstractClient*>& items() const;   // Accès en lecture (affichage)
+
     private:
         std::list<AbstractClient*> m_clients;   // Liste des clients en attente
 };

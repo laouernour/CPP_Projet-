@@ -15,6 +15,9 @@ class Consultation : public AbstractOperation
         std::string toString() const override;
         // Retourne les informations de l'opération
 
+        std::string typeName() const override;
+        // Retourne "consultation"
+
 };
 
 #endif // CONSULTATION_H

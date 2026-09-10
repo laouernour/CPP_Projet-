@@ -15,6 +15,7 @@ class Bank
 
         const std::vector<Cashier*>& getCashiers() const;  // Récupérer les caissiers
         Queue& getQueue();                                  // Récupérer la file d'attente
+        const Queue& getQueue() const;                      // Version lecture seule (affichage)
 
         Cashier* getFreeCashier() const;   // Chercher un caissier libre
 
