@@ -5,6 +5,16 @@
 build/
 bin/
 
+# Artefacts qmake (IHM Qt)
+qt/release/
+qt/debug/
+qt/Makefile
+qt/Makefile.*
+qt/.qmake.stash
+qt/moc_*
+qt/*.moc
+qt/object_script.*
+
 # Base de données générée à l'exécution
 *.db
 *.db-journal

@@ -1,9 +1,8 @@
-#include <cstring>
 #include <iostream>
 
 #include "simulation/Simulation.h"
+#include "simulation/SimulationDefaults.h"
 #include "database/Database.h"
-#include "ui/RealtimeView.h"
 
 namespace
 {
@@ -25,42 +24,14 @@ void persistAndShow(const Simulation& simulation)
 }
 }
 
-int main(int argc, char** argv)
+int main()
 {
-    // "gui" en argument -> fenêtre graphique temps réel ; sinon -> mode console
-    const bool guiMode = (argc > 1 && std::strcmp(argv[1], "gui") == 0);
-
     // Création des paramètres de la simulation
-    const SimulationEntry parameters(
-        100,  // duree de la simulation
-        3,    // nombre de caissiers
-        10,   // temps minimal de service
-        20,   // temps maximal de service
-        5,    // un client arrive toutes les 5 unites de temps
-        0.10, // 10 % de clients VIP
-        7);   // patience des clients non urgents
+    const SimulationEntry parameters = defaultSimulationEntry();
 
     Simulation simulation(parameters);
 
-    if (guiMode)
-    {
-        // Mode graphique : la fenêtre fait avancer la simulation en temps réel
-        RealtimeView view(simulation, 150);
-        view.run();
-
-        if (simulation.isFinished())
-        {
-            std::cout << simulation.simulationResults() << std::endl;
-            persistAndShow(simulation);
-        }
-        else
-        {
-            std::cout << "Simulation interrompue (fenetre fermee avant la fin).\n";
-        }
-        return 0;
-    }
-
-    // Mode console : affiche les paramètres, déroule la simulation, puis les résultats
+    // Mode console : affiche les paramètres, déroule la simulation, puis les résultats.
     std::cout << "========================================\n";
     std::cout << "       SIMULATION D'AGENCE BANCAIRE\n";
     std::cout << "========================================\n";

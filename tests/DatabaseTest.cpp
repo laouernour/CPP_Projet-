@@ -13,7 +13,7 @@
 #include <string>
 
 #include "database/Database.h"
-#include "sqlite3.h"
+#include "database/sqlite/sqlite3.h"
 
 #include "simulation/Simulation.h"
 #include "simulation/SimulationEntry.h"

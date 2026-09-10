@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "sqlite3.h"
+#include "database/sqlite/sqlite3.h"
 
 #include "client/AbstractClient.h"
 #include "client/AbstractOperation.h"
