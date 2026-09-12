@@ -1,6 +1,8 @@
 #include "StatisticsView.h"
 
 #include <QComboBox>
+#include <QDateTime>
+#include <QTimeZone>
 #include <QFileInfo>
 #include <QLabel>
 #include <QPainter>
@@ -172,9 +174,11 @@ void StatisticsView::reloadHistory()
             auto stmt = query(db.get(), "SELECT s.id,s.started_at,s.duration FROM simulations s JOIN statistics st ON st.simulation_id=s.id ORDER BY s.id DESC");
             int rc;
             while ((rc = sqlite3_step(stmt.get())) == SQLITE_ROW)
-                m_source->addItem(tr("Simulation #%1 · %2 UTC · %3 u.t.")
+                m_source->addItem(tr("Simulation #%1 · %2 (Paris) · %3 u.t.")
                     .arg(sqlite3_column_int64(stmt.get(), 0))
-                    .arg(QString::fromUtf8(reinterpret_cast<const char*>(sqlite3_column_text(stmt.get(), 1))))
+                    .arg(QDateTime::fromString(
+                        QString::fromUtf8(reinterpret_cast<const char*>(sqlite3_column_text(stmt.get(), 1))) + "Z",
+                        Qt::ISODate).toTimeZone(QTimeZone("Europe/Paris")).toString("dd/MM/yyyy HH:mm:ss"))
                     .arg(sqlite3_column_int(stmt.get(), 2)),
                     QVariant::fromValue<qlonglong>(sqlite3_column_int64(stmt.get(), 0)));
             if (rc != SQLITE_DONE) throw std::runtime_error(sqlite3_errmsg(db.get()));

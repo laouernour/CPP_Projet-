@@ -6,7 +6,7 @@
 // Paramètres communs à la console et à Qt.
 inline SimulationEntry defaultSimulationEntry()
 {
-    return SimulationEntry(500, 3, 10, 20, 2, 0.10, 6);
+    return SimulationEntry(200, 3, 10, 20,4, 0.10, 9);
 }
 
 #endif
